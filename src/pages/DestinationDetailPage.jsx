@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Heart, MapPin, Plus, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 import { RatingStars } from "../components/DestinationCard";
@@ -7,13 +7,16 @@ import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { DESTINATIONS, findDestination } from "../lib/data";
 import { formatEtb, formatUsd, useTrip } from "../lib/trip-store";
+import { useAuth } from "../context/AuthContext";
 import { cn } from "../lib/utils";
 
 export function DestinationDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const d = findDestination(id);
 
+  const { isAuthenticated } = useAuth();
   const { isFavorite, toggleFavorite, addStop } = useTrip();
 
   if (!d) {
@@ -42,8 +45,9 @@ export function DestinationDetailPage() {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      <section className="surface-brand relative flex h-72 items-end overflow-hidden md:h-96">
-        <div className="absolute inset-0 bg-ink/25" />
+      <section className="relative flex h-72 items-end overflow-hidden md:h-96">
+        <img src={d.imageUrl} alt={d.name} className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
         <div className="relative mx-auto w-full max-w-7xl px-5 pb-8 md:px-8">
           <Link
             to="/destinations"
@@ -135,6 +139,11 @@ export function DestinationDetailPage() {
             <button
               type="button"
               onClick={() => {
+                if (!isAuthenticated) {
+                  navigate("/login", { state: { from: location } });
+                  return;
+                }
+
                 addStop(d.id);
                 toast.success(`${d.name} added to your itinerary`);
               }}
@@ -144,7 +153,14 @@ export function DestinationDetailPage() {
             </button>
             <button
               type="button"
-              onClick={() => toggleFavorite(d.id)}
+              onClick={() => {
+                if (!isAuthenticated) {
+                  navigate("/login", { state: { from: location } });
+                  return;
+                }
+
+                toggleFavorite(d.id);
+              }}
               className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-background py-3 text-sm font-semibold text-ink transition hover:bg-mist"
             >
               <Heart

@@ -25,8 +25,15 @@ export function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/destinations" element={<DestinationsPage />} />
-            <Route path="/destinations/:id" element={<DestinationDetailPage />} />
-            
+            <Route
+              path="/destinations/:id"
+              element={
+                <ProtectedRoute>
+                  <DestinationDetailPage />
+                </ProtectedRoute>
+              }
+            />
+
             {/* Protected Routes */}
             <Route
               path="/planner"

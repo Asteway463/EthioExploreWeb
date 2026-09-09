@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Heart, MapPin, Star } from "lucide-react";
 import { formatEtb, formatUsd, useTrip } from "../lib/trip-store";
+import { useAuth } from "../context/AuthContext";
 import { cn } from "../lib/utils";
 
 export function RatingStars({ rating, className }) {
@@ -20,24 +21,46 @@ export function RatingStars({ rating, className }) {
 
 export function DestinationCard({ d }) {
   const { isFavorite, toggleFavorite } = useTrip();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const fav = isFavorite(d.id);
+
+  const handleDetailsClick = (event) => {
+    if (!isAuthenticated) {
+      event.preventDefault();
+      navigate("/login", { state: { from: { pathname: `/destinations/${d.id}` } } });
+    }
+  };
+
+  const handleFavoriteClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login", { state: { from: { pathname: `/destinations/${d.id}` } } });
+      return;
+    }
+
+    toggleFavorite(d.id);
+  };
 
   return (
     <article className="card-lift group overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
       <div className="relative">
-        <Link to={`/destinations/${d.id}`} className="block">
-          <div className="surface-brand relative flex h-44 items-center justify-center overflow-hidden px-4 text-center">
+        <Link to={`/destinations/${d.id}`} onClick={handleDetailsClick} className="block">
+          <div className="relative h-44 overflow-hidden">
+            <img
+              src={d.imageUrl}
+              alt={d.name}
+              loading="lazy"
+              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
             <span className="absolute top-3 left-3 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-bold tracking-wide text-ink">
               {d.tag}
-            </span>
-            <span className="font-display text-2xl font-extrabold text-primary-foreground/90">
-              {d.name}
             </span>
           </div>
         </Link>
         <button
           type="button"
-          onClick={() => toggleFavorite(d.id)}
+          onClick={handleFavoriteClick}
           aria-label={fav ? `Remove ${d.name} from favorites` : `Save ${d.name} to favorites`}
           className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/90 transition-transform hover:scale-110 shadow-sm"
         >
@@ -67,6 +90,7 @@ export function DestinationCard({ d }) {
           </span>
           <Link
             to={`/destinations/${d.id}`}
+            onClick={handleDetailsClick}
             className="text-xs font-semibold text-sky hover:underline"
           >
             View Details

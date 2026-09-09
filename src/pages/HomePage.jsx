@@ -22,13 +22,13 @@ export function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative h-[420px] overflow-hidden md:h-[560px]">
         <img
           src={heroImage}
           alt="Sunrise over the Simien Mountains escarpments in Ethiopia"
           width={1920}
           height={1080}
-          className="absolute inset-0 size-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-ink/65" />
         <RouteMotif />
