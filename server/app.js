@@ -7,10 +7,35 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:3000",
+  process.env.CLIENT_URL,
+  ...(process.env.CLIENT_URLS ? process.env.CLIENT_URLS.split(",") : []),
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+
+    const isAllowed =
+      allowedOrigins.includes(origin) ||
+      origin.includes(".vercel.app") ||
+      origin.includes(".netlify.app") ||
+      origin.includes(".github.dev") ||
+      origin.includes("localhost");
+
+    if (isAllowed) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("CORS origin not allowed"));
+  },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
