@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Heart, MapPin, Plus, TriangleAlert } from "lucide-react";
+import { ArrowLeft, Heart, MapPin, MapPinned, Plus, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 import { RatingStars } from "../components/DestinationCard";
 import { Footer } from "../components/Footer";
@@ -18,6 +18,15 @@ export function DestinationDetailPage() {
 
   const { isAuthenticated } = useAuth();
   const { isFavorite, toggleFavorite, addStop } = useTrip();
+
+  const handleMapOpen = () => {
+    if (!isAuthenticated) {
+      navigate("/login", { state: { from: location } });
+      return;
+    }
+
+    window.open(d.mapUrl, "_blank", "noopener,noreferrer");
+  };
 
   if (!d) {
     return (
@@ -138,6 +147,13 @@ export function DestinationDetailPage() {
             <p className="text-xs text-muted-foreground">{formatEtb(d.price)}</p>
             <button
               type="button"
+              onClick={handleMapOpen}
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-background py-3 text-sm font-semibold text-ink transition hover:bg-mist"
+            >
+              <MapPinned className="size-4" /> View on Google Maps
+            </button>
+            <button
+              type="button"
               onClick={() => {
                 if (!isAuthenticated) {
                   navigate("/login", { state: { from: location } });
@@ -147,7 +163,7 @@ export function DestinationDetailPage() {
                 addStop(d.id);
                 toast.success(`${d.name} added to your itinerary`);
               }}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99]"
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99]"
             >
               <Plus className="size-4" /> Add to trip planner
             </button>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Compass, HeartHandshake, ShieldCheck } from "lucide-react";
+import heroImage from "../assets/hero-ethiopia.jpg";
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { RouteMotif } from "../components/RouteMotif";
@@ -26,7 +27,14 @@ export function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
-      <section className="surface-cta relative overflow-hidden py-20 text-primary-foreground">
+      <section
+        className="relative overflow-hidden py-20 text-primary-foreground"
+        style={{
+          backgroundImage: `linear-gradient(rgba(8, 17, 25, 0.58), rgba(8, 17, 25, 0.7)), url(${heroImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <RouteMotif />
         <div className="relative mx-auto max-w-3xl px-5 text-center md:px-8">
           <h1 className="font-display text-3xl font-extrabold md:text-4xl">

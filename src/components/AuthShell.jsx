@@ -1,12 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Lock, Mail, MountainSnow, User } from "lucide-react";
+import heroImage from "../assets/hero-ethiopia.jpg";
 import { RouteMotif } from "./RouteMotif";
 
 export function AuthShell({ children }) {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      <div className="surface-cta relative hidden flex-col justify-between overflow-hidden p-12 text-primary-foreground lg:flex">
+      <div
+        className="surface-cta relative hidden flex-col justify-between overflow-hidden p-12 text-primary-foreground lg:flex"
+        style={{
+          backgroundImage: `linear-gradient(rgba(8, 17, 25, 0.6), rgba(8, 17, 25, 0.72)), url(${heroImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <RouteMotif />
         <Link to="/" className="relative flex items-center gap-2 font-display text-lg font-extrabold">
           <span className="flex size-8 items-center justify-center rounded-lg bg-white/20">

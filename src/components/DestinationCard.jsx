@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, MapPin, Star } from "lucide-react";
+import { Heart, MapPin, MapPinned, Star } from "lucide-react";
 import { formatEtb, formatUsd, useTrip } from "../lib/trip-store";
 import { useAuth } from "../context/AuthContext";
 import { cn } from "../lib/utils";
@@ -39,6 +39,17 @@ export function DestinationCard({ d }) {
     }
 
     toggleFavorite(d.id);
+  };
+
+  const handleMapClick = (event) => {
+    event.preventDefault();
+
+    if (!isAuthenticated) {
+      navigate("/login", { state: { from: { pathname: `/destinations/${d.id}` } } });
+      return;
+    }
+
+    window.open(d.mapUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -80,7 +91,7 @@ export function DestinationCard({ d }) {
           <MapPin className="size-3.5" /> {d.region} · {d.category}
         </p>
         <p className="mb-3 line-clamp-2 text-sm text-muted-foreground">{d.desc}</p>
-        <div className="flex items-center justify-between border-t border-border pt-3">
+        <div className="flex items-center justify-between gap-2 border-t border-border pt-3">
           <span className="text-sm font-bold text-primary">
             {formatUsd(d.price)}
             <span className="ml-1 text-xs font-normal text-muted-foreground">/ person</span>
@@ -88,13 +99,22 @@ export function DestinationCard({ d }) {
               {formatEtb(d.price)}
             </span>
           </span>
-          <Link
-            to={`/destinations/${d.id}`}
-            onClick={handleDetailsClick}
-            className="text-xs font-semibold text-sky hover:underline"
-          >
-            View Details
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleMapClick}
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-ink hover:underline"
+            >
+              <MapPinned className="size-3.5" /> Map
+            </button>
+            <Link
+              to={`/destinations/${d.id}`}
+              onClick={handleDetailsClick}
+              className="text-xs font-semibold text-sky hover:underline"
+            >
+              View Details
+            </Link>
+          </div>
         </div>
       </div>
     </article>
