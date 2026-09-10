@@ -1,7 +1,7 @@
 import pool, { memoryStore, getIsMySqlAvailable } from "../config/database.js";
 
 // Initial seed destinations for Ethiopia
-export const SEED_DESTINATIONS = [
+const RAW_SEED_DESTINATIONS = [
   {
     id: "lalibela",
     slug: "lalibela",
@@ -17,10 +17,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 2500,
     lat: 12.0316,
     lng: 39.0473,
-    image_url: "https://images.unsplash.com/photo-1578922864835-e9b4661a5b8a?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Bete%20Giyorgis%2001.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1578922864835-e9b4661a5b8a?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Bete%20Giyorgis%20Lalibela.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Bete%20Giyorgis.jpg?width=1000",
     ],
     short_desc: "Eleven medieval rock-hewn churches carved downward into volcanic rock, still an active pilgrimage site.",
     description: "Known as the New Jerusalem, Lalibela is a high-mountain town in northern Ethiopia famous for its 11 monolithic and semi-monolithic churches carved directly out of solid volcanic basalt in the 12th and 13th centuries.",
@@ -47,9 +47,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 3500,
     lat: 13.1833,
     lng: 38.0500,
-    image_url: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%20in%20Ethiopia.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%20-%20Ethiopia.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Simien%20Mountains%2C%20Ethiopia.jpg?width=1000",
     ],
     short_desc: "Jagged escarpments, roaming gelada monkeys, and trekking routes above 4,000m.",
     description: "The Simien Mountains National Park is a UNESCO World Heritage site known as 'The Chessboard of the Gods', with massive precipices and home to endemic Gelada baboons and Walia ibex.",
@@ -76,9 +77,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 4800,
     lat: 14.2417,
     lng: 40.3000,
-    image_url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Dallol%2C%20Danakil%20Depression.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Dallol%2C%20Danakil%20Depression.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Danakil%20depression.jpg?width=1200",
     ],
     short_desc: "Sulphur springs, salt flats, and an active lava lake — one of the hottest, lowest places on Earth.",
     description: "Located in the Afar Triangle, the Danakil Depression is one of the lowest and hottest places on Earth, featuring vibrant neon hydrothermal vents at Dallol and the glowing lava lake of Erta Ale.",
@@ -105,9 +107,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 1800,
     lat: 12.6030,
     lng: 37.4521,
-    image_url: "https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img27%20Fasil%20Ghebbi.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img09%20Fasil%20Ghebbi.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img27%20Fasil%20Ghebbi.jpg?width=1000",
     ],
     short_desc: "Royal castles and enclosures earning it the nickname 'Africa's Camelot'.",
     description: "Founded by Emperor Fasilides in 1636, Gondar served as Ethiopia's royal capital for over two centuries with grand stone castles and the angel-painted Debre Berhan Selassie church.",
@@ -134,9 +137,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 2000,
     lat: 11.5936,
     lng: 37.3908,
-    image_url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Tana%2C%20Bahir%20Dar.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Amhara%20asv2018-02%20img066%20Lake%20Tana%20at%20Bahir%20Dar.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Amhara%20asv2018-02%20img081%20Lake%20Tana%20at%20Bahir%20Dar.jpg?width=1200",
     ],
     short_desc: "Island monasteries on Ethiopia's largest lake and the thundering source of the Blue Nile.",
     description: "Bahir Dar is a beautiful lakeside city on Lake Tana, offering boat trips to ancient island monasteries and visits to the majestic Tis Issat (Blue Nile Falls).",
@@ -163,9 +167,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 1900,
     lat: 14.1213,
     lng: 38.7269,
-    image_url: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Large%20obelisk%20in%20Axum%2C%20Ethiopia.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Obelisk%20at%20Axum.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Axum%20asv2018-01%20img36%20Stelae%20Park.jpg?width=1200",
     ],
     short_desc: "Ancient obelisks and ruins of the Kingdom of Aksum, said to house the Ark of the Covenant.",
     description: "The ancient seat of the Aksumite Empire, known for colossal granite obelisks, the Queen of Sheba's bath, and the Chapel of the Tablet.",
@@ -192,9 +197,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 1500,
     lat: 9.3131,
     lng: 42.1183,
-    image_url: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C%20Ethiopia%20%2814419898066%29.jpg?width=1200",
     ],
     short_desc: "A walled Islamic city of 82 mosques, colourful alleyways, and the famous hyena feeding.",
     description: "Surrounded by a 16th-century wall with five historic gates, Harar is known for pastel alleys, traditional Harari homes, and the thrilling nightly hyena feeding ceremony.",
@@ -221,9 +227,9 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 2800,
     lat: 6.8833,
     lng: 39.7500,
-    image_url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Bale%20mountains.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Bale%20Mountains%2C%20Ethiopia%20%2849905812543%29.jpg?width=1200",
     ],
     short_desc: "Afro-alpine highlands and the best chance on Earth to see the rare Ethiopian wolf.",
     description: "Bale Mountains National Park protects the largest Afro-alpine habitat in Africa, home to the rare red-coated Ethiopian wolf and misty Harenna Cloud Forest.",
@@ -250,9 +256,9 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 4000,
     lat: 5.9333,
     lng: 36.5667,
-    image_url: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Omo%20Valley%20in%20Ethiopia.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Omo%20Valley%20in%20Ethiopia.jpg?width=1200",
     ],
     short_desc: "Home to more than a dozen distinct indigenous communities and centuries-old traditions.",
     description: "A cultural tapestry of indigenous tribes including Mursi, Hamer, Karo, and Dassanech preserving unique cultural ceremonies, body ornamentation, and market traditions.",
@@ -279,9 +285,9 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 1200,
     lat: 7.0504,
     lng: 38.4763,
-    image_url: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Hawassa%20.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20hawassa.jpg?width=1200",
     ],
     short_desc: "Vibrant Rift Valley city with lakeside promenades, famous fish market and birdlife.",
     description: "A peaceful lakeside resort city known for its scenic shoreline promenade, morning Amora Gedel fish market, aquatic birds, and Colobus monkeys.",
@@ -308,9 +314,9 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 2200,
     lat: 6.0333,
     lng: 37.5500,
-    image_url: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Arba%20Minch%20Ethiopia.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Arba%20Minch%20Ethiopia.jpg?width=1200",
     ],
     short_desc: "Forty springs, Lake Chamo's giant crocodile market, and Dorze elephant-shaped houses.",
     description: "Set between Lake Abaya and Lake Chamo, Arba Minch features giant Nile crocodiles, savannah plains of Nechisar National Park, and Dorze woven bamboo huts in Chencha.",
@@ -337,9 +343,10 @@ export const SEED_DESTINATIONS = [
     activity_cost_etb: 1500,
     lat: 9.0320,
     lng: 38.7469,
-    image_url: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Addis%20Ababa%20from%20Entoto%20Mountains.jpg?width=1200",
     gallery_json: [
-      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/National%20museum%20of%20Ethiopia.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Ethiopian%20National%20Museum%20in%20Addis%20Ababa.jpg?width=1200",
     ],
     short_desc: "Ethiopia's vibrant capital, home to 3.2-million-year-old Lucy, Merkato, and Entoto Park.",
     description: "The diplomatic capital of Africa, featuring Lucy at the National Museum, panoramic Mount Entoto Park, Africa's largest open-air market Merkato, and Unity Park.",
@@ -354,6 +361,105 @@ export const SEED_DESTINATIONS = [
   },
 ];
 
+const CURATED_DESTINATION_MEDIA = {
+  lalibela: {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Bete%20Giyorgis%2001.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Bete%20Giyorgis%20Lalibela.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Bete%20Giyorgis.jpg?width=1000",
+    ],
+  },
+  "simien-mountains": {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%20in%20Ethiopia.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%20-%20Ethiopia.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Simien%20Mountains%2C%20Ethiopia.jpg?width=1000",
+    ],
+  },
+  "danakil-depression": {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Dallol%2C%20Danakil%20Depression.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Dallol%2C%20Danakil%20Depression.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Danakil%20depression.jpg?width=1200",
+    ],
+  },
+  gondar: {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img27%20Fasil%20Ghebbi.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img09%20Fasil%20Ghebbi.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img27%20Fasil%20Ghebbi.jpg?width=1000",
+    ],
+  },
+  "bahir-dar": {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Tana%2C%20Bahir%20Dar.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Amhara%20asv2018-02%20img066%20Lake%20Tana%20at%20Bahir%20Dar.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Amhara%20asv2018-02%20img081%20Lake%20Tana%20at%20Bahir%20Dar.jpg?width=1200",
+    ],
+  },
+  axum: {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Large%20obelisk%20in%20Axum%2C%20Ethiopia.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Obelisk%20at%20Axum.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Axum%20asv2018-01%20img36%20Stelae%20Park.jpg?width=1200",
+    ],
+  },
+  harar: {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C%20Ethiopia%20%2814419898066%29.jpg?width=1200",
+    ],
+  },
+  "bale-mountains": {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Bale%20mountains.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Bale%20Mountains%2C%20Ethiopia%20%2849905812543%29.jpg?width=1200",
+    ],
+  },
+  "omo-valley": {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Omo%20Valley%20in%20Ethiopia.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Omo%20Valley%20in%20Ethiopia.jpg?width=1200",
+    ],
+  },
+  hawassa: {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Hawassa%20.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20hawassa.jpg?width=1200",
+    ],
+  },
+  "arba-minch": {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Arba%20Minch%20Ethiopia.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Arba%20Minch%20Ethiopia.jpg?width=1200",
+    ],
+  },
+  "addis-ababa": {
+    image_url: "https://commons.wikimedia.org/wiki/Special:FilePath/Addis%20Ababa%20cityscape.jpg?width=1200",
+    gallery_json: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Addis%20Ababa%20cityscape.jpg?width=1200",
+    ],
+  },
+};
+
+function normalizeDestinationMedia(destination) {
+  if (!destination) return destination;
+
+  const key = destination.id?.toLowerCase() || destination.slug?.toLowerCase();
+  const media = key ? CURATED_DESTINATION_MEDIA[key] : null;
+
+  if (!media) return destination;
+
+  return {
+    ...destination,
+    image_url: media.image_url || destination.image_url,
+    gallery_json: Array.isArray(media.gallery_json) && media.gallery_json.length
+      ? media.gallery_json
+      : destination.gallery_json || [],
+  };
+}
+
 // Initialize memory store with seed destinations
 memoryStore.destinations = [...SEED_DESTINATIONS];
 
@@ -361,7 +467,7 @@ memoryStore.destinations = [...SEED_DESTINATIONS];
  * Get all destinations with optional filter & search
  */
 export async function getAllDestinations({ query, region, category, maxPrice } = {}) {
-  let list = [...memoryStore.destinations];
+  let list = [...memoryStore.destinations].map(normalizeDestinationMedia);
 
   if (query && query.trim()) {
     const q = query.toLowerCase().trim();
@@ -398,7 +504,7 @@ export async function getDestinationById(idOrSlug) {
   const dest = memoryStore.destinations.find(
     (d) => d.id.toLowerCase() === key || d.slug.toLowerCase() === key
   );
-  return dest || null;
+  return dest ? normalizeDestinationMedia(dest) : null;
 }
 
 /**

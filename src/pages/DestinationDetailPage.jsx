@@ -156,9 +156,11 @@ export function DestinationDetailPage() {
   const related = DESTINATIONS.filter((x) => x.region === displayDestination.region && x.id !== displayDestination.id).slice(0, 3);
   const galleryImages = Array.isArray(displayDestination.gallery) && displayDestination.gallery.length
     ? displayDestination.gallery
-    : Array.isArray(photos) && photos.length
-      ? photos.map((photo) => photo.image_url || photo.imageUrl)
-      : [displayDestination.imageUrl].filter(Boolean);
+    : Array.isArray(displayDestination.gallery_json) && displayDestination.gallery_json.length
+      ? displayDestination.gallery_json
+      : Array.isArray(photos) && photos.length
+        ? photos.map((photo) => photo.image_url || photo.imageUrl)
+        : [displayDestination.imageUrl || displayDestination.image_url].filter(Boolean);
   const fav = isFavorite(displayDestination.id);
   const destinationComments = comments.length ? comments : displayDestination.comments || [];
   const destinationPhotos = photos.length ? photos : displayDestination.photos || [];

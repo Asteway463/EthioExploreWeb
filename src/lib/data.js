@@ -53,7 +53,7 @@ export const STARTING_LOCATIONS = [
   },
 ];
 
-export const DESTINATIONS = [
+const RAW_DESTINATIONS = [
   {
     id: "lalibela",
     slug: "lalibela",
@@ -138,7 +138,7 @@ export const DESTINATIONS = [
 
     gallery: [
       "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%20-%20Ethiopia.jpg?width=1200",
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%2001.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Simien%20Mountains%2C%20Ethiopia.jpg?width=1000",
     ],
 
     mapUrl:
@@ -194,6 +194,7 @@ export const DESTINATIONS = [
 
     gallery: [
       "https://commons.wikimedia.org/wiki/Special:FilePath/Dallol%2C%20Danakil%20Depression.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Danakil%20depression.jpg?width=1200",
     ],
 
     mapUrl:
@@ -245,7 +246,7 @@ export const DESTINATIONS = [
       "Founded by Emperor Fasilides in 1636, Gondar served as Ethiopia's royal capital for over two centuries. The Fasil Ghebbi royal compound boasts fairytale stone castles blending Portuguese, Moorish, and Aksumite architectural styles. Nearby, the famous Debre Berhan Selassie church is decorated with iconic painted ceiling angels looking down upon worshippers.",
 
     imageUrl:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img10%20Fasil%20Ghebbi.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img27%20Fasil%20Ghebbi.jpg?width=1200",
 
     gallery: [
       "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img09%20Fasil%20Ghebbi.jpg?width=1200",
@@ -359,6 +360,7 @@ export const DESTINATIONS = [
 
     gallery: [
       "https://commons.wikimedia.org/wiki/Special:FilePath/Obelisk%20at%20Axum.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Axum%20asv2018-01%20img36%20Stelae%20Park.jpg?width=1200",
     ],
 
     mapUrl:
@@ -413,6 +415,7 @@ export const DESTINATIONS = [
 
     gallery: [
       "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C%20Ethiopia%20%2814419898066%29.jpg?width=1200",
     ],
 
     mapUrl:
@@ -574,7 +577,7 @@ export const DESTINATIONS = [
       "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Hawassa%20.jpg?width=1200",
 
     gallery: [
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20hawassa.jpg?width=1200",
+      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm-NXawJhKGiiZ-UZ23R7V9EW7lKfEoDNEcG7pViSMk9WVIp9TXjwvXcCfyu9ZyEnmlVrCtQVLtP8hhqI-8lX5Ps5RRSl8dYAViJQIf-_J4SXMWgkHVRp-YM4BthnfxgGUqrJWx=s680-w680-h510-rw",
     ],
 
     mapUrl:
@@ -711,6 +714,99 @@ export const DESTINATIONS = [
     },
   },
 ];
+
+const DESTINATION_MEDIA_MAP = {
+  lalibela: {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Bete%20Giyorgis%2001.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Bete%20Giyorgis%20Lalibela.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Bete%20Giyorgis.jpg?width=1000",
+    ],
+  },
+  "simien-mountains": {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%20in%20Ethiopia.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Simien%20Mountains%20National%20Park%20-%20Ethiopia.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Simien%20Mountains%2C%20Ethiopia.jpg?width=1000",
+    ],
+  },
+  "danakil-depression": {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Dallol%2C%20Danakil%20Depression.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Dallol%2C%20Danakil%20Depression.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Danakil%20depression.jpg?width=1200",
+    ],
+  },
+  gondar: {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img27%20Fasil%20Ghebbi.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img09%20Fasil%20Ghebbi.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Gondar%20asv2018-02%20img27%20Fasil%20Ghebbi.jpg?width=1000",
+    ],
+  },
+  "bahir-dar": {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Tana%2C%20Bahir%20Dar.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Amhara%20asv2018-02%20img066%20Lake%20Tana%20at%20Bahir%20Dar.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Amhara%20asv2018-02%20img081%20Lake%20Tana%20at%20Bahir%20Dar.jpg?width=1200",
+    ],
+  },
+  axum: {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Large%20obelisk%20in%20Axum%2C%20Ethiopia.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Obelisk%20at%20Axum.jpg?width=1000",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/ET%20Axum%20asv2018-01%20img36%20Stelae%20Park.jpg?width=1200",
+    ],
+  },
+  harar: {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Harar%20Jugol%2C%20Ethiopia%20%2814419898066%29.jpg?width=1200",
+    ],
+  },
+  "bale-mountains": {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Bale%20mountains.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Bale%20Mountains%2C%20Ethiopia%20%2849905812543%29.jpg?width=1200",
+    ],
+  },
+  "omo-valley": {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Omo%20Valley%20in%20Ethiopia.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Omo%20Valley%20in%20Ethiopia.jpg?width=1200",
+    ],
+  },
+  hawassa: {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Hawassa%20.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20hawassa.jpg?width=1200",
+    ],
+  },
+  "arba-minch": {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Arba%20Minch%20Ethiopia.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Arba%20Minch%20Ethiopia.jpg?width=1200",
+    ],
+  },
+  "addis-ababa": {
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Addis%20Ababa%20from%20Entoto%20Mountains.jpg?width=1200",
+    gallery: [
+      "https://commons.wikimedia.org/wiki/Special:FilePath/National%20museum%20of%20Ethiopia.jpg?width=1200",
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Ethiopian%20National%20Museum%20in%20Addis%20Ababa.jpg?width=1200",
+    ],
+  },
+};
+
+export const DESTINATIONS = RAW_DESTINATIONS.map((destination) => {
+  const media = DESTINATION_MEDIA_MAP[destination.id];
+
+  return {
+    ...destination,
+    imageUrl: media?.imageUrl || destination.imageUrl,
+    gallery: Array.isArray(media?.gallery) && media.gallery.length ? media.gallery : destination.gallery || [destination.imageUrl].filter(Boolean),
+  };
+});
 
 export const TESTIMONIALS = [
   {

@@ -11,6 +11,24 @@ import { getPhotosByDestination } from "../models/photoModel.js";
 /**
  * Get all destinations with query, region, category, price filters
  */
+function normalizeDestinationResponse(destination) {
+  if (!destination) return destination;
+
+  const gallery = Array.isArray(destination.gallery_json)
+    ? destination.gallery_json
+    : Array.isArray(destination.gallery)
+      ? destination.gallery
+      : [destination.image_url || destination.imageUrl].filter(Boolean);
+
+  return {
+    ...destination,
+    imageUrl: destination.imageUrl || destination.image_url,
+    image_url: destination.image_url || destination.imageUrl,
+    gallery: gallery,
+    gallery_json: gallery,
+  };
+}
+
 export async function getDestinations(req, res) {
   try {
     const { query, region, category, maxPrice } = req.query;
@@ -18,7 +36,7 @@ export async function getDestinations(req, res) {
     return res.status(200).json({
       success: true,
       count: destinations.length,
-      destinations,
+      destinations: destinations.map(normalizeDestinationResponse),
     });
   } catch (error) {
     console.error("Error in getDestinations:", error);
@@ -50,12 +68,16 @@ export async function getDestinationDetails(req, res) {
       getPhotosByDestination(destination.id),
     ]);
 
+    const normalizedDestination = normalizeDestinationResponse({
+      ...destination,
+      rating: ratings.count > 0 ? ratings.average : destination.rating || 4.8,
+      reviewsCount: ratings.count > 0 ? ratings.count : destination.reviewsCount || 10,
+    });
+
     return res.status(200).json({
       success: true,
       destination: {
-        ...destination,
-        rating: ratings.count > 0 ? ratings.average : destination.rating || 4.8,
-        reviewsCount: ratings.count > 0 ? ratings.count : destination.reviewsCount || 10,
+        ...normalizedDestination,
         comments,
         photos,
       },
