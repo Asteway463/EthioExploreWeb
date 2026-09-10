@@ -1,5 +1,5 @@
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5003";
+  import.meta.env.VITE_API_URL || "https://ethioexploreweb.onrender.com";
 
 /**
  * Universal fetch wrapper for API calls

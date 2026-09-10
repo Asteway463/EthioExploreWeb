@@ -1,6 +1,5 @@
 import app from "./app.js";
-import { testConnection } from "./config/database.js";
-import { ensureUsersTable } from "./models/userModel.js";
+import { testConnection, ensureDatabaseSchema } from "./config/database.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -40,7 +39,7 @@ async function startServer() {
   const isDbConnected = await testConnection();
 
   if (isDbConnected) {
-    await ensureUsersTable();
+    await ensureDatabaseSchema();
   } else {
     console.warn(
       "⚠️ Server is starting without an active PostgreSQL connection. " +

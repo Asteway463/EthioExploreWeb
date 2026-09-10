@@ -1,52 +1,102 @@
-import mysql from "mysql2/promise";
+import pg from "pg";
 import dotenv from "dotenv";
 
+const { Pool } = pg;
 dotenv.config();
 
 async function initDatabase() {
-  const host = process.env.DB_HOST || "localhost";
-  const port = Number(process.env.DB_PORT) || 3306;
-  const user = process.env.DB_USER || "root";
-  const password = process.env.DB_PASSWORD || "";
-  const dbName = process.env.DB_NAME || "ethioexplore_db";
+  const databaseUrl = process.env.DATABASE_URL;
 
-  console.log(`🔧 Connecting to MySQL server at ${host}:${port} as ${user}...`);
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is missing. Add your PostgreSQL connection string to the environment.");
+  }
 
-  let connection;
+  const pool = new Pool({
+    connectionString: databaseUrl,
+    ssl: databaseUrl.includes("neon.tech") ? { rejectUnauthorized: false } : undefined,
+  });
+
   try {
-    // Connect without specifying database to create it if missing
-    connection = await mysql.createConnection({
-      host,
-      port,
-      user,
-      password,
-    });
+    console.log("🔧 Initializing PostgreSQL schema...");
 
-    console.log(`📦 Creating database '${dbName}' if not exists...`);
-    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-    await connection.query(`USE \`${dbName}\`;`);
-
-    console.log("📋 Creating 'users' table if not exists...");
-    const createUsersTableSql = `
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-    `;
-    await connection.query(createUsersTableSql);
+        role VARCHAR(50) DEFAULT 'user',
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
 
-    console.log("✅ MySQL Database and 'users' table successfully initialized!");
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS comments (
+        id SERIAL PRIMARY KEY,
+        destination_id VARCHAR(255) NOT NULL,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        user_name VARCHAR(255) NOT NULL,
+        text TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS favorites (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        destination_id VARCHAR(255) NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE (user_id, destination_id)
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS photos (
+        id SERIAL PRIMARY KEY,
+        destination_id VARCHAR(255) NOT NULL,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        user_name VARCHAR(255) NOT NULL,
+        image_url TEXT NOT NULL,
+        caption TEXT DEFAULT '',
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS ratings (
+        id SERIAL PRIMARY KEY,
+        destination_id VARCHAR(255) NOT NULL,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE (destination_id, user_id)
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS trips (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        title VARCHAR(255) NOT NULL,
+        starting_point VARCHAR(255) DEFAULT 'Addis Ababa',
+        travellers INTEGER NOT NULL DEFAULT 2,
+        days INTEGER NOT NULL DEFAULT 7,
+        destinations_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+        total_cost_etb INTEGER NOT NULL DEFAULT 0,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+
+    console.log("✅ PostgreSQL database schema initialized successfully.");
   } catch (error) {
-    console.error("❌ Failed to initialize database:", error.message);
+    console.error("❌ Failed to initialize PostgreSQL schema:", error.message);
     process.exit(1);
   } finally {
-    if (connection) {
-      await connection.end();
-    }
+    await pool.end();
   }
 }
 

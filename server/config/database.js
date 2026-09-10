@@ -7,99 +7,16 @@ dotenv.config();
 let pool = null;
 let isDatabaseAvailable = false;
 
-// In-memory fallback data store for resilient local development/testing
 export const memoryStore = {
-  users: [
-    {
-      id: 1,
-      name: "Admin Explorer",
-      email: "admin@ethioexplore.com",
-      password: "$2a$10$YourHashedPasswordPlaceholder999", // Admin account
-      role: "admin",
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: 2,
-      name: "Abebe Bikila",
-      email: "abebe@example.com",
-      password: "$2a$10$YourHashedPasswordPlaceholder999",
-      role: "user",
-      created_at: new Date().toISOString(),
-    },
-  ],
+  users: [],
   destinations: [],
-  comments: [
-    {
-      id: 1,
-      destination_id: "lalibela",
-      user_id: 2,
-      user_name: "Abebe Bikila",
-      text: "Beautiful place. I really enjoyed visiting Lalibela. The underground passages between Bete Medhane Alem and Bete Maryam are miraculous.",
-      created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: 2,
-      destination_id: "danakil-depression",
-      user_id: 2,
-      user_name: "Abebe Bikila",
-      text: "Erta Ale volcano at night is mesmerizing. Pack strong hiking boots and plenty of water for Dallol.",
-      created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: 3,
-      destination_id: "simien-mountains",
-      user_id: 1,
-      user_name: "Admin Explorer",
-      text: "The Gelada baboon troops were peaceful and allowed us to observe them closely along the ridge.",
-      created_at: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
-    },
-  ],
-  ratings: [
-    { id: 1, destination_id: "lalibela", user_id: 1, rating: 5, created_at: new Date().toISOString() },
-    { id: 2, destination_id: "lalibela", user_id: 2, rating: 5, created_at: new Date().toISOString() },
-    { id: 3, destination_id: "simien-mountains", user_id: 2, rating: 5, created_at: new Date().toISOString() },
-    { id: 4, destination_id: "danakil-depression", user_id: 2, rating: 5, created_at: new Date().toISOString() },
-  ],
-  photos: [
-    {
-      id: 1,
-      destination_id: "lalibela",
-      user_id: 2,
-      user_name: "Abebe Bikila",
-      image_url: "https://images.unsplash.com/photo-1578922864835-e9b4661a5b8a?auto=format&fit=crop&w=1200&q=80",
-      caption: "Sunrise touching the cross carved atop Bete Giyorgis.",
-      created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: 2,
-      destination_id: "simien-mountains",
-      user_id: 1,
-      user_name: "Admin Explorer",
-      image_url: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80",
-      caption: "Escarpment edge at Sankaber camp.",
-      created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-  ],
-  favorites: [
-    { id: 1, user_id: 2, destination_id: "lalibela", created_at: new Date().toISOString() },
-    { id: 2, user_id: 2, destination_id: "danakil-depression", created_at: new Date().toISOString() },
-  ],
-  trips: [
-    {
-      id: 1,
-      user_id: 2,
-      title: "Northern Historical Circuit",
-      starting_point: "Addis Ababa",
-      travellers: 2,
-      days: 7,
-      destinations_json: ["lalibela", "gondar", "bahir-dar"],
-      total_cost_etb: 48000,
-      created_at: new Date().toISOString(),
-    },
-  ],
+  comments: [],
+  ratings: [],
+  photos: [],
+  favorites: [],
+  trips: [],
 };
 
-// Initialize PostgreSQL connection pool
 const databaseUrl = process.env.DATABASE_URL;
 
 if (databaseUrl) {
@@ -112,29 +29,114 @@ if (databaseUrl) {
       connectionTimeoutMillis: 10000,
     });
   } catch (err) {
-    console.warn("⚠️ PostgreSQL pool creation skipped, using in-memory resilient store:", err.message);
+    console.warn("⚠️ PostgreSQL pool creation failed:", err.message);
   }
 }
 
 export async function testConnection() {
-  if (!pool) return false;
+  if (!pool) {
+    console.warn("⚠️ DATABASE_URL is not configured. PostgreSQL is unavailable.");
+    isDatabaseAvailable = false;
+    return false;
+  }
+
   try {
     await pool.query("SELECT 1");
     console.log("✅ PostgreSQL database connected successfully.");
     isDatabaseAvailable = true;
     return true;
   } catch (error) {
-    console.warn("ℹ️ PostgreSQL not connected:", error.message);
-    console.log("🚀 EthioExplore is running with resilient persistent store fallback.");
+    console.warn("⚠️ PostgreSQL connection failed:", error.message);
     isDatabaseAvailable = false;
     return false;
   }
+}
+
+export async function ensureDatabaseSchema() {
+  if (!pool) {
+    throw new Error("PostgreSQL pool is not initialized. Check DATABASE_URL.");
+  }
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      role VARCHAR(50) DEFAULT 'user',
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS comments (
+      id SERIAL PRIMARY KEY,
+      destination_id VARCHAR(255) NOT NULL,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      user_name VARCHAR(255) NOT NULL,
+      text TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS favorites (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      destination_id VARCHAR(255) NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE (user_id, destination_id)
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS photos (
+      id SERIAL PRIMARY KEY,
+      destination_id VARCHAR(255) NOT NULL,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      user_name VARCHAR(255) NOT NULL,
+      image_url TEXT NOT NULL,
+      caption TEXT DEFAULT '',
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS ratings (
+      id SERIAL PRIMARY KEY,
+      destination_id VARCHAR(255) NOT NULL,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE (destination_id, user_id)
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS trips (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title VARCHAR(255) NOT NULL,
+      starting_point VARCHAR(255) DEFAULT 'Addis Ababa',
+      travellers INTEGER NOT NULL DEFAULT 2,
+      days INTEGER NOT NULL DEFAULT 7,
+      destinations_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+      total_cost_etb INTEGER NOT NULL DEFAULT 0,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  return true;
 }
 
 export function getIsDatabaseAvailable() {
   return isDatabaseAvailable;
 }
 
+// Backward-compatible alias for older modules still referencing the old name.
 export function getIsMySqlAvailable() {
   return isDatabaseAvailable;
 }
