@@ -53,7 +53,7 @@ export function DestinationCard({ d }) {
   };
 
   return (
-    <article className="card-lift group overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
+    <article className="card-lift group overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-300 ease-out hover:-translate-y-2 hover:border-primary/40 hover:shadow-[0_24px_45px_-20px_rgba(85,197,138,0.45)]">
       <div className="relative">
         <Link to={`/destinations/${d.id}`} onClick={handleDetailsClick} className="block">
           <div className="relative h-44 overflow-hidden">
@@ -61,7 +61,7 @@ export function DestinationCard({ d }) {
               src={d.imageUrl}
               alt={d.name}
               loading="lazy"
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
             <span className="absolute top-3 left-3 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-bold tracking-wide text-ink">
