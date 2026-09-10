@@ -63,7 +63,7 @@ export function RegisterPage() {
     try {
       setIsSubmitting(true);
       await register(name.trim(), email.trim(), password, confirmPassword);
-      navigate("/planner", { replace: true });
+      navigate("/", { replace: true });
     } catch (err) {
       setErrorMessage(err.message || "Registration failed. Please try again.");
     } finally {
