@@ -8,13 +8,13 @@ export async function findByEmail(email) {
 
   if (getIsMySqlAvailable() && pool) {
     try {
-      const [rows] = await pool.execute(
-        "SELECT id, name, email, password, role, created_at FROM users WHERE LOWER(email) = ? LIMIT 1",
+      const { rows } = await pool.query(
+        "SELECT id, name, email, password, role, created_at FROM users WHERE LOWER(email) = $1 LIMIT 1",
         [normalizedEmail]
       );
       return rows[0] || null;
     } catch (err) {
-      console.warn("MySQL query error in findByEmail, falling back to memory store:", err.message);
+      console.warn("Database query error in findByEmail, falling back to memory store:", err.message);
     }
   }
 
@@ -32,13 +32,13 @@ export async function findById(id) {
 
   if (getIsMySqlAvailable() && pool) {
     try {
-      const [rows] = await pool.execute(
-        "SELECT id, name, email, role, created_at FROM users WHERE id = ? LIMIT 1",
+      const { rows } = await pool.query(
+        "SELECT id, name, email, role, created_at FROM users WHERE id = $1 LIMIT 1",
         [numericId]
       );
       return rows[0] || null;
     } catch (err) {
-      console.warn("MySQL query error in findById, falling back to memory store:", err.message);
+      console.warn("Database query error in findById, falling back to memory store:", err.message);
     }
   }
 
@@ -57,18 +57,19 @@ export async function createUser({ name, email, password, role = "user" }) {
 
   if (getIsMySqlAvailable() && pool) {
     try {
-      const [result] = await pool.execute(
-        "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+      const result = await pool.query(
+        "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role",
         [name, normalizedEmail, password, role]
       );
+      const user = result.rows[0];
       return {
-        id: result.insertId,
-        name,
-        email: normalizedEmail,
-        role,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
       };
     } catch (err) {
-      console.warn("MySQL query error in createUser, falling back to memory store:", err.message);
+      console.warn("Database query error in createUser, falling back to memory store:", err.message);
     }
   }
 
@@ -97,19 +98,19 @@ export async function ensureUsersTable() {
   }
 
   try {
-    await pool.execute(`
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         role VARCHAR(50) DEFAULT 'user',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
     return true;
   } catch (error) {
-    console.warn("MySQL users table check skipped using fallback store:", error.message);
+    console.warn("Users table check skipped using fallback store:", error.message);
     return false;
   }
 }

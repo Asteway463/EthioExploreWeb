@@ -1,10 +1,11 @@
-import mysql from "mysql2/promise";
+import pg from "pg";
 import dotenv from "dotenv";
 
+const { Pool } = pg;
 dotenv.config();
 
 let pool = null;
-let isMySqlAvailable = false;
+let isDatabaseAvailable = false;
 
 // In-memory fallback data store for resilient local development/testing
 export const memoryStore = {
@@ -98,40 +99,44 @@ export const memoryStore = {
   ],
 };
 
-// Initialize connection pool
-try {
-  pool = mysql.createPool({
-    host: process.env.DB_HOST || "localhost",
-    port: Number(process.env.DB_PORT) || 3306,
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "ethioexplore_db",
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-  });
-} catch (err) {
-  console.warn("⚠️ MySQL pool creation skipped, using in-memory resilient store:", err.message);
+// Initialize PostgreSQL connection pool
+const databaseUrl = process.env.DATABASE_URL;
+
+if (databaseUrl) {
+  try {
+    pool = new Pool({
+      connectionString: databaseUrl,
+      ssl: databaseUrl.includes("neon.tech") ? { rejectUnauthorized: false } : undefined,
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
+    });
+  } catch (err) {
+    console.warn("⚠️ PostgreSQL pool creation skipped, using in-memory resilient store:", err.message);
+  }
 }
 
 export async function testConnection() {
   if (!pool) return false;
   try {
-    const connection = await pool.getConnection();
-    console.log("✅ MySQL database connected successfully.");
-    isMySqlAvailable = true;
-    connection.release();
+    await pool.query("SELECT 1");
+    console.log("✅ PostgreSQL database connected successfully.");
+    isDatabaseAvailable = true;
     return true;
   } catch (error) {
-    console.warn("ℹ️ MySQL not connected:", error.message);
+    console.warn("ℹ️ PostgreSQL not connected:", error.message);
     console.log("🚀 EthioExplore is running with resilient persistent store fallback.");
-    isMySqlAvailable = false;
+    isDatabaseAvailable = false;
     return false;
   }
 }
 
+export function getIsDatabaseAvailable() {
+  return isDatabaseAvailable;
+}
+
 export function getIsMySqlAvailable() {
-  return isMySqlAvailable;
+  return isDatabaseAvailable;
 }
 
 export { pool };
