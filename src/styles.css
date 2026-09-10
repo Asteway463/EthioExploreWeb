@@ -167,35 +167,6 @@
   border-color: rgba(85, 197, 138, 0.3);
 }
 
-.route-path {
-  fill: none;
-  stroke: rgba(85, 197, 138, 0.4);
-  stroke-width: 2;
-  stroke-dasharray: 6 8;
-  animation: dash 35s linear infinite;
-}
-
-@keyframes dash {
-  to {
-    stroke-dashoffset: -1000;
-  }
-}
-
-.pin {
-  animation: pin-pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes pin-pulse {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-}
-
 .fade-in {
   animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }

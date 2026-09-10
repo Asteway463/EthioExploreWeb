@@ -23,14 +23,16 @@ export function AuthShell({ children }) {
           EthioExplore
         </Link>
         <div className="relative">
-          <h2 className="mb-3 font-display text-3xl leading-tight font-extrabold">
-            Your route through Ethiopia starts with an account.
+          <h2 className="mb-3 font-display text-3xl leading-tight font-black tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.55)]">
+            <span className="text-[#7EE7A8]">Your route</span>{" "}
+            <span className="text-[#F4D35E]">through Ethiopia</span>{" "}
+            <span className="text-[#FF8A80]">starts with an account.</span>
           </h2>
-          <p className="max-w-sm text-primary-foreground/80">
+          <p className="max-w-sm text-base font-semibold text-white/85 drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]">
             Save favorites, build itineraries, and pick up your trip plan on any device.
           </p>
         </div>
-        <p className="relative text-xs text-primary-foreground/60">© 2026 EthioExplore</p>
+        <p className="relative text-xs font-bold tracking-[0.12em] text-white/70 uppercase">© 2026 EthioExplore</p>
       </div>
       <div className="flex items-center justify-center p-6 md:p-12 bg-background">
         <div className="fade-in w-full max-w-sm">{children}</div>

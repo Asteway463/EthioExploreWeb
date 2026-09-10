@@ -36,11 +36,6 @@ async function request(endpoint, options = {}) {
 
     return data;
   } catch (error) {
-    if (error.name === "TypeError" && error.message.includes("fetch")) {
-      const netError = new Error("Unable to connect to the server. Please check your connection or ensure backend is running.");
-      netError.status = 503;
-      throw netError;
-    }
     throw error;
   }
 }
