@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import destinationRoutes from "./routes/destinationRoutes.js";
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.get("/api/health", (req, res) => {
 
 // API Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/destinations", destinationRoutes);
 
 // 404 handler for unknown API routes
 app.use("/api/*", (req, res) => {

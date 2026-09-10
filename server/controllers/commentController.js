@@ -67,7 +67,8 @@ export async function postComment(req, res) {
  */
 export async function editComment(req, res) {
   try {
-    const { id } = req.params;
+    const { id, commentId } = req.params;
+    const commentLookupId = commentId || id;
     const { text } = req.body;
 
     if (!text || !text.trim()) {
@@ -78,7 +79,7 @@ export async function editComment(req, res) {
     }
 
     const isAdmin = req.user.role === "admin";
-    const updated = await updateComment(id, req.user.id, text, isAdmin);
+    const updated = await updateComment(commentLookupId, req.user.id, text, isAdmin);
 
     if (!updated) {
       return res.status(404).json({
@@ -106,9 +107,10 @@ export async function editComment(req, res) {
  */
 export async function removeComment(req, res) {
   try {
-    const { id } = req.params;
+    const { id, commentId } = req.params;
+    const commentLookupId = commentId || id;
     const isAdmin = req.user.role === "admin";
-    const deleted = await deleteComment(id, req.user.id, isAdmin);
+    const deleted = await deleteComment(commentLookupId, req.user.id, isAdmin);
 
     if (!deleted) {
       return res.status(404).json({
